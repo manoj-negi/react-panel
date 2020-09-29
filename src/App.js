@@ -7,6 +7,7 @@ import React from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
+import { PrivateRoutes } from './routes/index'
 
 const AlertPage = React.lazy(() => import('pages/AlertPage'));
 const AuthModalPage = React.lazy(() => import('pages/AuthModalPage'));
@@ -38,18 +39,8 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount () {
-    const auth = localStorage.getItem('auth')
-    if (auth) {
-      this.setState({
-        isAuth: true
-      })
-    }
-  }
-
   render() {
-    console.log(this.state)
-    const { isAuth } = this.state
+    const isAuth = localStorage.getItem('auth')
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
@@ -72,8 +63,11 @@ class App extends React.Component {
             />
 
             {
-              isAuth ? <MainLayout breakpoint={this.props.breakpoint}>
+              isAuth === 'true' ? <MainLayout breakpoint={this.props.breakpoint}>
                 <React.Suspense fallback={<PageSpinner />}>
+                 {
+                   PrivateRoutes.map((item, i) => <Route path={item.path} component={item.component} key={'route' + i} />)
+                 }
                   <Route exact path="/" component={DashboardPage} />
                   <Route exact path="/login-modal" component={AuthModalPage} />
                   <Route exact path="/buttons" component={ButtonPage} />

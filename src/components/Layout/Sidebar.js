@@ -173,9 +173,9 @@ class Sidebar extends React.Component {
                 // id={`navItem-${name}-${index}`}
                 className="text-uppercase"
                 tag={NavLink}
-                to='/'
+                to='/user'
                 activeClassName="active"
-                exact={false}
+                exact={true}
               >
               <MdAssignment className={bem.e('nav-item-icon')} />
                 <span className="">List</span>
