@@ -28,6 +28,7 @@ import {
   MdPeople,
   MdAssignment
 } from 'react-icons/md';
+import { BsFillPersonPlusFill } from "react-icons/bs";
 import { NavLink } from 'react-router-dom';
 import {
   // UncontrolledTooltip,
@@ -168,22 +169,36 @@ class Sidebar extends React.Component {
               </BSNavLink>
             </NavItem>
             <Collapse isOpen={this.state.isOpenComponents}>
-            <NavItem className={bem.e('nav-item')}>
-              <BSNavLink
-                // id={`navItem-${name}-${index}`}
-                className="text-uppercase"
-                tag={NavLink}
-                to='/user'
-                activeClassName="active"
-                exact={true}
-              >
-              <MdAssignment className={bem.e('nav-item-icon')} />
-                <span className="">List</span>
-              </BSNavLink>
-            </NavItem>
+              <NavItem className={bem.e('nav-item')}>
+                <BSNavLink
+                  // id={`navItem-${name}-${index}`}
+                  className="text-uppercase"
+                  tag={NavLink}
+                  to='/user'
+                  activeClassName="active"
+                  exact={true}
+                >
+                <MdAssignment className={bem.e('nav-item-icon')} />
+                  <span className="">List</span>
+                </BSNavLink>
+              </NavItem>
+
+              <NavItem className={bem.e('nav-item')}>
+                <BSNavLink
+                  // id={`navItem-${name}-${index}`}
+                  className="text-uppercase"
+                  tag={NavLink}
+                  to='/user/create'
+                  activeClassName="active"
+                  exact={true}
+                >
+                <BsFillPersonPlusFill className={bem.e('nav-item-icon')} />
+                  <span className="">Create</span>
+                </BSNavLink>
+              </NavItem>
             </Collapse>
 
-            <NavItem
+            {/* <NavItem
               className={bem.e('nav-item')}
               onClick={this.handleClick('Components')}
             >
@@ -301,7 +316,7 @@ class Sidebar extends React.Component {
                   </BSNavLink>
                 </NavItem>
               ))}
-            </Collapse>
+            </Collapse> */}
           </Nav>
         </div>
       </aside>

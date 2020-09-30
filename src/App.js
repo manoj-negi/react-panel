@@ -66,7 +66,7 @@ class App extends React.Component {
               isAuth === 'true' ? <MainLayout breakpoint={this.props.breakpoint}>
                 <React.Suspense fallback={<PageSpinner />}>
                  {
-                   PrivateRoutes.map((item, i) => <Route path={item.path} component={item.component} key={'route' + i} />)
+                   PrivateRoutes.map((item, i) => <Route exact path={item.path} component={item.component} key={'route' + i} />)
                  }
                   <Route exact path="/" component={DashboardPage} />
                   <Route exact path="/login-modal" component={AuthModalPage} />

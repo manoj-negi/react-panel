@@ -1,11 +1,13 @@
 import React from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
+import { FaUserEdit } from 'react-icons/fa';
+import { BsFillTrashFill } from "react-icons/bs";
 
 class UserList extends React.Component {
 
   render () {
     return (
-      <Row>
+      <Row className="m-2">
         <Col>
           <Card className="mb-3">
             <CardHeader>All Users</CardHeader>
@@ -18,6 +20,7 @@ class UserList extends React.Component {
                     <th>Last Name</th>
                     <th>Username</th>
                     <th> Email </th>
+                    <th> Action </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -27,6 +30,16 @@ class UserList extends React.Component {
                     <td>Otto</td>
                     <td>@mdo</td>
                     <td> Vikas@123.com </td>
+                    <td>
+                      <Button color="primary" size="sm">
+                       <FaUserEdit className="mr-1" />
+                        Edit
+                      </Button>
+                      <Button color="danger" size="sm" className="ml-1">
+                      <BsFillTrashFill className="mr-1" />
+                        Delete
+                      </Button>
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
@@ -34,6 +47,16 @@ class UserList extends React.Component {
                     <td>Thornton</td>
                     <td>@fat</td>
                     <td> Vikas@123.com </td>
+                    <td>
+                      <Button color="primary" size="sm">
+                       <FaUserEdit className="mr-1" />
+                        Edit
+                      </Button>
+                      <Button color="danger" size="sm" className="ml-1">
+                      <BsFillTrashFill className="mr-1" />
+                        Delete
+                      </Button>
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row">3</th>
@@ -41,6 +64,16 @@ class UserList extends React.Component {
                     <td>the Bird</td>
                     <td>@twitter</td>
                     <td> Vikas@123.com </td>
+                    <td>
+                      <Button color="primary" size="sm">
+                       <FaUserEdit className="mr-1" />
+                        Edit
+                      </Button>
+                      <Button color="danger" size="sm" className="ml-1">
+                      <BsFillTrashFill className="mr-1" />
+                        Delete
+                      </Button>
+                    </td>
                   </tr>
                 </tbody>
               </Table>
