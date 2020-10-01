@@ -3,13 +3,18 @@ import { Card, CardBody, CardHeader, Col, Row, Table, Button, Modal, ModalHeader
 import { FaUserEdit } from 'react-icons/fa';
 import { BsFillTrashFill } from "react-icons/bs";
 import { Users } from '../../data.js'
+import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 class UserList extends React.Component {
 
   state = {
     modal: false,
     users: [],
-    active: null
+    active: null,
+    gridApi: null,
+    gridColumnApi: null
   }
 
   componentDidMount () {
@@ -24,10 +29,19 @@ class UserList extends React.Component {
     })
   }
 
-  HandleDelete = () => {
-    console.log(this.state.active)
+  onGridReady = params => this.setState({
+    gridApi: params.api,
+    gridColumnApi: params.columnApi
+  })
+
+  HandleDelete = (e) => {
+    const { gridApi } = this.state
+    const selectedNodes = gridApi.getSelectedNodes()
     const { users, active } = this.state
-    delete users[active]
+    selectedNodes.forEach((item, i) => {
+      delete users[item.childIndex]
+    });
+
     this.setState({
       users: users,
       active: null,
@@ -37,6 +51,7 @@ class UserList extends React.Component {
   render () {
 
     const { users } = this.state
+    console.log(users)
     return (
       <Row className="m-2">
         <Col>
@@ -60,6 +75,30 @@ class UserList extends React.Component {
                   </Button>
                 </ModalFooter>
               </Modal>
+
+              <div className="ag-theme-alpine" style={ { height: 400, width: '100%' } }>
+
+              <Button color="primary" size="sm">
+               <FaUserEdit className="mr-1" />
+                Edit
+              </Button>
+              <Button color="danger" size="sm" className="ml-1" onClick={() => {
+                this.toggle()
+              }}>
+              <BsFillTrashFill className="mr-1" />
+                Delete
+              </Button>
+
+                 <AgGridReact
+                    onGridReady={this.onGridReady}
+                    rowSelection="multiple"
+                     rowData={users}>
+                     <AgGridColumn field="fname" sortable={true} filter={true} checkboxSelection={true}></AgGridColumn>
+                     <AgGridColumn field="lname" sortable={true} filter={true}></AgGridColumn>
+                     <AgGridColumn field="email" sortable={true} filter={true}></AgGridColumn>
+                 </AgGridReact>
+             </div>
+
               <Table responsive>
                 <thead>
                   <tr>
