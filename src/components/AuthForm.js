@@ -2,7 +2,8 @@ import logo200Image from 'assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label, Alert } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
+import {  Redirect } from 'react-router-dom';
 
 class AuthForm extends React.Component {
 
@@ -38,15 +39,19 @@ class AuthForm extends React.Component {
     if (!password) {
       errors.push('password is required')
     }
-
-    this.setState({
-      errors: errors
-    })
-
+    let redirect = false
     if (errors.length === 0) {
       localStorage.setItem('auth', true)
+      redirect = true
+      // console.log('===================')
+      // console.log(this.context)
       this.props.history.push('/')
     }
+
+    this.setState({
+      errors: errors,
+      redirect: redirect
+    })
 
   };
 

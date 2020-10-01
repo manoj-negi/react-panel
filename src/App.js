@@ -5,7 +5,7 @@ import PageSpinner from 'components/PageSpinner';
 import AuthPage from 'pages/AuthPage';
 import React from 'react';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
 import { PrivateRoutes } from './routes/index'
 
@@ -42,7 +42,7 @@ class App extends React.Component {
   render() {
     const isAuth = localStorage.getItem('auth')
     return (
-      <BrowserRouter basename={getBasename()}>
+      <Router>
         <GAListener>
           <Switch>
             <LayoutRoute
@@ -93,7 +93,7 @@ class App extends React.Component {
             }
           </Switch>
         </GAListener>
-      </BrowserRouter>
+      </Router>
     );
   }
 }

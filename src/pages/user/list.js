@@ -2,11 +2,20 @@ import React from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FaUserEdit } from 'react-icons/fa';
 import { BsFillTrashFill } from "react-icons/bs";
+import { Users } from '../../data.js'
 
 class UserList extends React.Component {
 
   state = {
-    modal: false
+    modal: false,
+    users: [],
+    active: null
+  }
+
+  componentDidMount () {
+    this.setState({
+      users: Users
+    })
   }
 
   toggle = () => {
@@ -15,7 +24,19 @@ class UserList extends React.Component {
     })
   }
 
+  HandleDelete = () => {
+    console.log(this.state.active)
+    const { users, active } = this.state
+    delete users[active]
+    this.setState({
+      users: users,
+      active: null,
+      modal: false
+    })
+  }
   render () {
+
+    const { users } = this.state
     return (
       <Row className="m-2">
         <Col>
@@ -31,10 +52,10 @@ class UserList extends React.Component {
                   This action is irreversible.
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={this.toggle}>
+                  <Button color="primary" onClick={this.HandleDelete} size="sm">
                     Delete
                   </Button>{' '}
-                  <Button color="danger" onClick={this.toggle}>
+                  <Button color="danger" onClick={this.toggle} size="sm">
                     Cancel
                   </Button>
                 </ModalFooter>
@@ -42,7 +63,6 @@ class UserList extends React.Component {
               <Table responsive>
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Username</th>
@@ -51,57 +71,31 @@ class UserList extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td> Vikas@123.com </td>
-                    <td>
-                      <Button color="primary" size="sm">
-                       <FaUserEdit className="mr-1" />
-                        Edit
-                      </Button>
-                      <Button color="danger" size="sm" className="ml-1" onClick={this.toggle}>
-                      <BsFillTrashFill className="mr-1"  />
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td> Vikas@123.com </td>
-                    <td>
-                      <Button color="primary" size="sm">
-                       <FaUserEdit className="mr-1" />
-                        Edit
-                      </Button>
-                      <Button color="danger" size="sm" className="ml-1">
-                      <BsFillTrashFill className="mr-1" />
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td> Vikas@123.com </td>
-                    <td>
-                      <Button color="primary" size="sm">
-                       <FaUserEdit className="mr-1" />
-                        Edit
-                      </Button>
-                      <Button color="danger" size="sm" className="ml-1">
-                      <BsFillTrashFill className="mr-1" />
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
+                {
+                  users.map((item, index) =>
+                    <tr key={'users' + item.fname}>
+                      <td> {item.fname} </td>
+                      <td> {item.lname} </td>
+                      <td> {item.fname} </td>
+                      <td> {item.email} </td>
+                      <td>
+                        <Button color="primary" size="sm">
+                         <FaUserEdit className="mr-1" />
+                          Edit
+                        </Button>
+                        <Button color="danger" size="sm" className="ml-1" onClick={() => {
+                          this.setState({
+                            active: index
+                          })
+                          this.toggle()
+                        }}>
+                        <BsFillTrashFill className="mr-1"  />
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                }
                 </tbody>
               </Table>
             </CardBody>
