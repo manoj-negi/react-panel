@@ -36,15 +36,9 @@ class UserList extends React.Component {
 
   HandleDelete = (e) => {
     const { gridApi } = this.state
-    const selectedNodes = gridApi.getSelectedNodes()
-    const { users, active } = this.state
-    selectedNodes.forEach((item, i) => {
-      delete users[item.childIndex]
-    });
-
+    const selectedRowData = gridApi.getSelectedRows()
+    gridApi.applyTransaction({ remove: selectedRowData });
     this.setState({
-      users: users,
-      active: null,
       modal: false
     })
   }
@@ -78,11 +72,11 @@ class UserList extends React.Component {
 
               <div className="ag-theme-alpine" style={ { height: 400, width: '100%' } }>
 
-              <Button color="primary" size="sm">
+            {/*  <Button color="primary" size="sm">
                <FaUserEdit className="mr-1" />
                 Edit
-              </Button>
-              <Button color="danger" size="sm" className="ml-1" onClick={() => {
+              </Button> */}
+              <Button color="danger" size="sm" className="my-1" onClick={() => {
                 this.toggle()
               }}>
               <BsFillTrashFill className="mr-1" />
@@ -93,50 +87,12 @@ class UserList extends React.Component {
                     onGridReady={this.onGridReady}
                     rowSelection="multiple"
                      rowData={users}>
-                     <AgGridColumn field="fname" sortable={true} filter={true} checkboxSelection={true}></AgGridColumn>
-                     <AgGridColumn field="lname" sortable={true} filter={true}></AgGridColumn>
-                     <AgGridColumn field="email" sortable={true} filter={true}></AgGridColumn>
+                     <AgGridColumn headerName="First Name" field="fname" sortable={true} filter={true} checkboxSelection={true}></AgGridColumn>
+                     <AgGridColumn headerName="Last Name" field="lname" sortable={true} filter={true}></AgGridColumn>
+                     <AgGridColumn headerName="Email" field="email" sortable={true} filter={true}></AgGridColumn>
+                     <AgGridColumn headerName="Status" field="status" sortable={true} filter={true}></AgGridColumn>
                  </AgGridReact>
              </div>
-
-              <Table responsive>
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th> Email </th>
-                    <th> Action </th>
-                  </tr>
-                </thead>
-                <tbody>
-                {
-                  users.map((item, index) =>
-                    <tr key={'users' + item.fname}>
-                      <td> {item.fname} </td>
-                      <td> {item.lname} </td>
-                      <td> {item.fname} </td>
-                      <td> {item.email} </td>
-                      <td>
-                        <Button color="primary" size="sm">
-                         <FaUserEdit className="mr-1" />
-                          Edit
-                        </Button>
-                        <Button color="danger" size="sm" className="ml-1" onClick={() => {
-                          this.setState({
-                            active: index
-                          })
-                          this.toggle()
-                        }}>
-                        <BsFillTrashFill className="mr-1"  />
-                          Delete
-                        </Button>
-                      </td>
-                    </tr>
-                  )
-                }
-                </tbody>
-              </Table>
             </CardBody>
           </Card>
         </Col>
