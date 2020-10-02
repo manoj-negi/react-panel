@@ -67,8 +67,7 @@ class MasterList extends React.Component {
                     Cancel
                   </Button>
                 </ModalFooter>
-              </Modal>
-
+              </Modal> 
               <div className="ag-theme-alpine" style={ { height: 400, width: '100%' } }>
 
             {/*  <Button color="primary" size="sm">

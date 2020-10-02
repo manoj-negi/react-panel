@@ -241,7 +241,7 @@ class Sidebar extends React.Component {
                   // id={`navItem-${name}-${index}`}
                   className="text-uppercase"
                   tag={NavLink}
-                  to='/user/create'
+                  to='/master/create'
                   activeClassName="active"
                   exact={true}
                 >

@@ -6,6 +6,7 @@
   "dependencies": {
     "ag-grid-community": "^24.0.0",
     "ag-grid-react": "^24.0.0",
+    "axios": "^0.20.0",
     "bootstrap": "4.3.1",
     "chart.js": "2.7.2",
     "classnames": "^2.2.6",
