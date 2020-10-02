@@ -97,7 +97,8 @@ class Sidebar extends React.Component {
     isOpenComponents: true,
     isOpenContents: true,
     isOpenPages: true,
-    isOpenUser: true
+    isOpenUser: false,
+    isOPenMaster: false
   };
 
   handleClick = name => () => {
@@ -148,7 +149,7 @@ class Sidebar extends React.Component {
 
             <NavItem
               className={bem.e('nav-item')}
-              onClick={this.handleClick('Components')}
+              onClick={this.handleClick('User')}
             >
               <BSNavLink className={bem.e('nav-item-collapse')}>
                 <div className="d-flex">
@@ -159,7 +160,7 @@ class Sidebar extends React.Component {
                   className={bem.e('nav-item-icon')}
                   style={{
                     padding: 0,
-                    transform: this.state.isOpenComponents
+                    transform: this.state.isOpenUser
                       ? 'rotate(0deg)'
                       : 'rotate(-90deg)',
                     transitionDuration: '0.3s',
@@ -168,7 +169,7 @@ class Sidebar extends React.Component {
                 />
               </BSNavLink>
             </NavItem>
-            <Collapse isOpen={this.state.isOpenComponents}>
+            <Collapse isOpen={this.state.isOpenUser}>
               <NavItem className={bem.e('nav-item')}>
                 <BSNavLink
                   // id={`navItem-${name}-${index}`}
@@ -180,6 +181,58 @@ class Sidebar extends React.Component {
                 >
                 <MdAssignment className={bem.e('nav-item-icon')} />
                   <span className="">List</span>
+                </BSNavLink>
+              </NavItem>
+
+              <NavItem className={bem.e('nav-item')}>
+                <BSNavLink
+                  // id={`navItem-${name}-${index}`}
+                  className="text-uppercase"
+                  tag={NavLink}
+                  to='/user/create'
+                  activeClassName="active"
+                  exact={true}
+                >
+                <BsFillPersonPlusFill className={bem.e('nav-item-icon')} />
+                  <span className="">Create</span>
+                </BSNavLink>
+              </NavItem>
+            </Collapse>
+
+            <NavItem
+              className={bem.e('nav-item')}
+              onClick={this.handleClick('Master')}
+            >
+              <BSNavLink className={bem.e('nav-item-collapse')}>
+                <div className="d-flex">
+                  <MdExtension className={bem.e('nav-item-icon')} />
+                  <span className=" align-self-start">Master</span>
+                </div>
+                <MdKeyboardArrowDown
+                  className={bem.e('nav-item-icon')}
+                  style={{
+                    padding: 0,
+                    transform: this.state.isOpenMaster
+                      ? 'rotate(0deg)'
+                      : 'rotate(-90deg)',
+                    transitionDuration: '0.3s',
+                    transitionProperty: 'transform',
+                  }}
+                />
+              </BSNavLink>
+            </NavItem>
+            <Collapse isOpen={this.state.isOpenMaster}>
+              <NavItem className={bem.e('nav-item')}>
+                <BSNavLink
+                  // id={`navItem-${name}-${index}`}
+                  className="text-uppercase"
+                  tag={NavLink}
+                  to='/master'
+                  activeClassName="active"
+                  exact={true}
+                >
+                <MdAssignment className={bem.e('nav-item-icon')} />
+                  <span className="">list</span>
                 </BSNavLink>
               </NavItem>
 
