@@ -6,6 +6,14 @@ export const AddMaster = async data => {
                     return res
                   })
                   .catch((error) => {return error})
-  console.log(response)
+  return response
+}
+
+export const GetMasters = async data => {
+  const response = await API.get('/master', data)
+                  .then((res) => {
+                    return res
+                  })
+                  .catch((error) => {return error})
   return response
 }

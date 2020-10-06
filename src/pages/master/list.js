@@ -2,10 +2,10 @@ import React from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FaUserEdit } from 'react-icons/fa';
 import { BsFillTrashFill } from "react-icons/bs";
-import { Master } from '../../data.js'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { GetMasters } from "../../requests/master.js";
 
 class MasterList extends React.Component {
 
@@ -18,8 +18,14 @@ class MasterList extends React.Component {
   }
 
   componentDidMount () {
+    this.getData()
+  }
+
+  getData = async () => {
+    const response = await GetMasters()
+    const master = response.data
     this.setState({
-      masters: Master
+      masters: response.data
     })
   }
 
@@ -67,7 +73,7 @@ class MasterList extends React.Component {
                     Cancel
                   </Button>
                 </ModalFooter>
-              </Modal> 
+              </Modal>
               <div className="ag-theme-alpine" style={ { height: 400, width: '100%' } }>
 
             {/*  <Button color="primary" size="sm">

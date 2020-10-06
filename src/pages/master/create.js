@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardBody, CardHeader, Button, Form, Col, Row, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { BsFillPersonPlusFill } from "react-icons/bs";
 import { AddMaster } from "../../requests/master.js";
+import { withRouter } from 'react-router';
 
 class UserCreate extends React.Component {
 
@@ -12,7 +13,8 @@ class UserCreate extends React.Component {
     thumbnail: null,
     errors: [],
     status: '',
-    parent: ''
+    parent: '',
+    success: false
   }
 
   HandleSubmit = async () => {
@@ -51,18 +53,22 @@ class UserCreate extends React.Component {
       formData.append('thumbnail', thumbnail, thumbnail.name)
       formData.append('slug', slug)
       formData.append('parent', parent)
-      console.log(formData)
       const data = { title, description, slug, parent, thumbnail, status }
-      console.log(data)
       const response = await AddMaster(data)
-      console.log(await response)
-    }
-
-      setTimeout(() => {
+      if (response.status === 201) {
         this.setState({
-          errors: []
+          success: true
         })
-      }, 5000)
+        setTimeout(() => {
+          this.props.history.push('/master')
+        }, 5000)
+      }
+    }
+    setTimeout(() => {
+      this.setState({
+        errors: []
+      })
+    }, 5000)
     }
   }
 
@@ -88,13 +94,16 @@ class UserCreate extends React.Component {
     return jsx
   }
   render () {
-    const { title, description, slug, parent, thumbnail, status } = this.state
+    const { title, description, slug, parent, thumbnail, status, success } = this.state
     return (
       <Row className="m-2">
         <Col>
           <Card className="mb-3">
             <CardHeader> <BsFillPersonPlusFill className="mx-2" /> Add New Master</CardHeader>
             <CardBody>
+            {
+              success ? <Alert color="success" > Successfully added. </Alert> : ''
+            }
               {
                 this.getErrors()
               }
@@ -199,4 +208,4 @@ class UserCreate extends React.Component {
   }
 }
 
-export default UserCreate;
+export default withRouter(UserCreate);
