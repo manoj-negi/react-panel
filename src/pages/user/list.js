@@ -6,6 +6,8 @@ import { Users } from '../../data.js'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { GetUsers } from "../../requests/user";
+
 
 class UserList extends React.Component {
 
@@ -18,8 +20,14 @@ class UserList extends React.Component {
   }
 
   componentDidMount () {
+    this.getData()
+  }
+
+  getData = async () => {
+    const response = await GetUsers()
+    const users = response.data
     this.setState({
-      users: Users
+      users: users
     })
   }
 
@@ -45,7 +53,6 @@ class UserList extends React.Component {
   render () {
 
     const { users } = this.state
-    console.log(users)
     return (
       <Row className="m-2">
         <Col>

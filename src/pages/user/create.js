@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, CardBody, CardHeader, Button, Form, Col, Row, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { BsFillPersonPlusFill } from "react-icons/bs";
+import { AddUser } from "../../requests/user";
+
 
 class UserCreate extends React.Component {
 
@@ -9,11 +11,14 @@ class UserCreate extends React.Component {
     password: '',
     cpassword: '',
     errors: [],
-    status: ''
+    status: '',
+    success: false,
+    fname: '',
+    lname: ''
   }
 
-  HandleSubmit = () => {
-    const { email, password, cpassword , status} = this.state
+  HandleSubmit = async () => {
+    const { email, password, cpassword , status, fname, lname } = this.state
     const error = []
     if (!email) {
       error.push('Email is required')
@@ -35,17 +40,30 @@ class UserCreate extends React.Component {
       error.push('Passwords Didn\'t matched ')
     }
 
-    if (error) {
+    if (error.length > 0) {
       this.setState({
         errors: error
       })
-
-      setTimeout(() => {
+    } else {
+      const data = {
+        email, password, status, fname, lname
+      }
+      const response = await AddUser(data)
+      if (response.status === 201) {
         this.setState({
-          errors: []
+          success: true
         })
-      }, 5000)
+        setTimeout(() => {
+          this.props.history.push('/user')
+        }, 5000)
+      }
     }
+
+    setTimeout(() => {
+      this.setState({
+        errors: []
+      })
+    }, 5000)
   }
 
   HandleChange = (event) => {
@@ -63,17 +81,53 @@ class UserCreate extends React.Component {
     return jsx
   }
   render () {
-    const { email, password, cpassword, status } = this.state
+    const { email, password, cpassword, status, success, fname, lname } = this.state
     return (
       <Row className="m-2">
         <Col>
           <Card className="mb-3">
             <CardHeader> <BsFillPersonPlusFill className="mx-2" /> Add New Users</CardHeader>
             <CardBody>
+            {
+              success ? <Alert color="success" > Successfully added. </Alert> : ''
+            }
               {
                 this.getErrors()
               }
               <Form>
+
+              <FormGroup row>
+                <Label for="exampleEmail" sm={2}>
+                  First Name
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="text"
+                    name="fname"
+                    placeholder="First Name"
+                    bsSize="sm"
+                    value={fname}
+                    onChange={this.HandleChange}
+                  />
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Label for="exampleEmail" sm={2}>
+                  Last Name
+                </Label>
+                <Col sm={10}>
+                  <Input
+                    type="text"
+                    name="lname"
+                    placeholder="Last Name"
+                    bsSize="sm"
+                    value={lname}
+                    onChange={this.HandleChange}
+                  />
+                </Col>
+              </FormGroup>
+
                 <FormGroup row>
                   <Label for="exampleEmail" sm={2}>
                     Email
