@@ -4,25 +4,43 @@
       "fname": "vikas",
       "lname": "passi",
       "status": true,
-      "email": "vikas@123.com"
+      "email": "vikas@123.com",
+      "id": 0
     },
     {
       "fname": "johen",
       "lname": "mac",
       "status": true,
-      "email": "johen@123.com"
+      "email": "johen@123.com",
+      "id": 1
     },
     {
       "fname": "monu",
       "lname": "zon",
       "status": true,
-      "email": "monu@123.com"
+      "email": "monu@123.com",
+      "id": 2
     },
     {
       "fname": "raj",
       "lname": "din",
       "status": true,
+      "id": 3,
       "email": "raj@123.com"
+    },
+    {
+      "email": "vikasvisking007@gmail.com",
+      "password": "aviox123",
+      "status": "true",
+      "id": 4
+    },
+    {
+      "email": "vikasvisking007@gmail.com",
+      "password": "vikas123",
+      "status": "true",
+      "fname": "sdfsd",
+      "lname": "sadfsa",
+      "id": 5
     }
   ],
   "master": [
@@ -116,5 +134,30 @@
       "status": "true",
       "id": 11
     }
-  ]
+  ],
+  "settings": {
+    "id": "1",
+    "logo": null,
+    "theame": "secondary",
+    "admin_email": "",
+    "more_email": [],
+    "maintance_mode": true,
+    "version": "",
+    "limit": 0.1,
+    "offset": "",
+    "title": "",
+    "tagline": "",
+    "facebook": "",
+    "google": "",
+    "instagram": "",
+    "twitter": "",
+    "linkedn": "",
+    "g_api_key": "",
+    "g_analytics_key": "",
+    "date_format": "",
+    "thumbnail": {
+      "height": null,
+      "width": null
+    }
+  }
 }

@@ -28,7 +28,7 @@ import {
   MdPeople,
   MdAssignment
 } from 'react-icons/md';
-import { BsFillPersonPlusFill } from "react-icons/bs";
+import { BsFillPersonPlusFill, BsGearFill } from "react-icons/bs";
 import { NavLink } from 'react-router-dom';
 import {
   // UncontrolledTooltip,
@@ -250,6 +250,18 @@ class Sidebar extends React.Component {
                 </BSNavLink>
               </NavItem>
             </Collapse>
+            <NavItem className={bem.e('nav-item')}>
+              <BSNavLink
+                className="text-uppercase"
+                tag={NavLink}
+                to="/settings"
+                activeClassName="active"
+                exact={true}
+              >
+                <BsGearFill className={bem.e('nav-item-icon')} />
+                <span className="">Settings</span>
+              </BSNavLink>
+            </NavItem>
 
             {/* <NavItem
               className={bem.e('nav-item')}
