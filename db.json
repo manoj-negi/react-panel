@@ -136,28 +136,29 @@
     }
   ],
   "settings": {
-    "id": "1",
-    "logo": null,
-    "theame": "secondary",
-    "admin_email": "hello@123.com",
-    "more_email": [],
-    "maintance_mode": true,
-    "version": "",
-    "limit": 0.1,
-    "offset": "",
-    "title": "",
-    "tagline": "",
-    "facebook": "",
-    "google": "",
-    "instagram": "",
-    "twitter": "",
-    "linkedn": "",
-    "g_api_key": "",
-    "g_analytics_key": "",
-    "date_format": "",
+    "logo": "C:\\fakepath\\flower.jpeg",
+    "theame": "primary",
+    "admin_email": "vikas@vikas.com",
+    "maintance_mode": "true",
+    "version": "1",
+    "limit": "12",
+    "offset": "12",
+    "title": "Testing",
+    "tagline": "This is testing",
+    "facebook": "https://stackoverflow.com/questions/5915789/how-to-replace-an-item-in-an-array-with-javascript",
+    "google": "https://stackoverflow.com/questions/5915789/how-to-replace-an-item-in-an-array-with-javascript",
+    "instagram": "https://stackoverflow.com/questions/5915789/how-to-replace-an-item-in-an-array-with-javascript",
+    "twitter": "https://stackoverflow.com/questions/5915789/how-to-replace-an-item-in-an-array-with-javascript",
+    "linkedn": "https://stackoverflow.com/questions/5915789/how-to-replace-an-item-in-an-array-with-javascript",
+    "g_api_key": "asdas_asda",
+    "g_analytics_key": "Helloassds_dsdsdS_Dsa",
+    "date_format": "DD-MM-YYYY",
     "thumbnail": {
-      "height": 250,
-      "width": 250
-    }
+      "width": "250",
+      "height": "250"
+    },
+    "more_email": [
+      "test@gmail.com"
+    ]
   }
 }

@@ -1,9 +1,7 @@
 import React from 'react';
 import { Card, CardBody, CardHeader, Button, Form, Col, Row, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { BsGearFill } from "react-icons/bs";
-import { GetSettings } from "../requests/settings";
-import { AddUser } from "../requests/user";
-
+import { GetSettings, UpdateSettings } from "../requests/settings";
 
 class Settings extends React.Component {
 
@@ -29,13 +27,13 @@ class Settings extends React.Component {
     this.setState(prev => ({
         data: {
           ...prev.data,
-          data
+          ...data
         }
     }))
   }
 
   HandleSubmit = async () => {
-    const { logo, theame, admin_email, more_email, maintance_mode, version, limit, offset, title, tagline, facebook, google, instagram, twitter, linkedn, g_api_key, g_analytics_key, date_format, thumbnail } = this.state.data
+    const { logo, theame, admin_email, more_email, maintance_mode, version, limit, offset, title, tagline, facebook, google, instagram, twitter, linkedn, g_api_key, g_analytics_key, date_format, thumbnail, more } = this.state.data
     const error = []
     if (!logo) {
       error.push('Logo is required')
@@ -115,16 +113,16 @@ class Settings extends React.Component {
       })
     } else {
       const data = {
-        // email, password, status, fname, lname
+        logo, theame, admin_email, maintance_mode, version, limit, offset, title, tagline, facebook, google, instagram, twitter, linkedn, g_api_key, g_analytics_key, date_format, thumbnail
       }
-      const response = await AddUser(data)
+      data.more_email = more
+      console.log(data)
+      const response = await UpdateSettings(data)
+      console.log(response)
       if (response.status === 201) {
         this.setState({
           success: true
         })
-        setTimeout(() => {
-          this.props.history.push('/user')
-        }, 5000)
       }
     }
 
@@ -135,7 +133,6 @@ class Settings extends React.Component {
     }, 5000)
   }
 
-  HandleChange
 
   HandleChange = (event) => {
     let dictV = {
@@ -193,6 +190,7 @@ class Settings extends React.Component {
   }
   render () {
     const { data, success, errors, more } = this.state
+    console.log(data)
     return (
       <Row className="m-2">
         <Col>
@@ -200,7 +198,7 @@ class Settings extends React.Component {
             <CardHeader> <BsGearFill className="mx-2" /> Settings </CardHeader>
             <CardBody>
             {
-              success ? <Alert color="success" > Successfully added. </Alert> : ''
+              success ? <Alert color="success" > Successfully updated. </Alert> : ''
             }
               {
                 this.getErrors()
@@ -243,7 +241,7 @@ class Settings extends React.Component {
                   <Col sm={10}>
                     <Input
                       type="email"
-                      name="email"
+                      name="admin_email"
                       placeholder="Admin Email"
                       bsSize="sm"
                       value={data.admin_email || ""}
@@ -444,6 +442,22 @@ class Settings extends React.Component {
 
                 <FormGroup row>
                   <Label sm={2}>
+                    Linkedin
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="url"
+                      name="linkedn"
+                      placeholder="Linkedin"
+                      bsSize="sm"
+                      value={data.linkedn || ""}
+                      onChange={this.HandleChange}
+                    />
+                  </Col>
+                </FormGroup>
+
+                <FormGroup row>
+                  <Label sm={2}>
                     Google Api Key
                   </Label>
                   <Col sm={10}>
@@ -479,7 +493,7 @@ class Settings extends React.Component {
                     Date Format
                   </Label>
                   <Col sm={10}>
-                    <Input type="select" name="maintance_mode" value={data.date_format || ""} bsSize="sm"
+                    <Input type="select" name="date_format" value={data.date_format || ""} bsSize="sm"
                     onChange={this.HandleChange}
                     >
                       <option value="" disabled>Select Date Format</option>
@@ -499,7 +513,18 @@ class Settings extends React.Component {
                         placeholder="Thumbnail Width"
                         bsSize="sm"
                         value={data.thumbnail['width'] || ""}
-                        onChange={this.HandleChange}
+                        onChange={(event) => {
+                          const value = event.target.value
+                          this.setState(prev => ({
+                            data: {
+                              ...prev.data,
+                              thumbnail: {
+                                width: value,
+                                height: prev.data.thumbnail.height
+                              }
+                            }
+                          }))
+                        }}
                     />
                     </Col>
                     <Col sm={5}>
@@ -509,7 +534,18 @@ class Settings extends React.Component {
                         placeholder="Thumbnail Height"
                         bsSize="sm"
                         value={data.thumbnail['height'] || ""}
-                        onChange={this.HandleChange}
+                        onChange={(event) => {
+                          const value = event.target.value
+                          this.setState(prev => ({
+                            data: {
+                              ...prev.data,
+                              thumbnail: {
+                                width: prev.data.thumbnail.width,
+                                height: value
+                              }
+                            }
+                          }))
+                        }}
                     />
                     </Col>
                 </FormGroup>
