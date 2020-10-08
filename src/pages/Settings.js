@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardBody, CardHeader, Button, Form, Col, Row, FormGroup, Label, Input, Alert } from 'reactstrap';
-import { BsFillPersonPlusFill } from "react-icons/bs";
+import { BsGearFill } from "react-icons/bs";
 import { GetSettings } from "../requests/settings";
 import { AddUser } from "../requests/user";
 
@@ -10,7 +10,13 @@ class Settings extends React.Component {
   state = {
     errors: [],
     success: false,
-    data: {}
+    data: {
+      thumbnail: {
+        "height": null,
+        "width": null
+      },
+      more: ["test@gmail.com"]
+    }
   }
 
   componentDidMount () {
@@ -20,10 +26,12 @@ class Settings extends React.Component {
   getData = async () => {
     const response = await GetSettings()
     const data = response.data
-    console.log(data)
-    this.setState({
-      data: data
-    })
+    this.setState(prev => ({
+        data: {
+          ...prev.data,
+          data
+        }
+    }))
   }
 
   HandleSubmit = async () => {
@@ -41,12 +49,64 @@ class Settings extends React.Component {
       error.push('Admin Email is required')
     }
 
-    if (!admin_email) {
-      error.push('Admin Email is required')
-    }
-
     if (maintance_mode === '') {
       error.push('Please select the Maintaince Mode')
+    }
+
+    if (version === '') {
+      error.push('Version is required')
+    }
+
+    if (limit === '') {
+      error.push('Limit is required')
+    }
+
+    if (offset === '')  {
+      error.push('Offset is required')
+    }
+
+    if (title === '') {
+      error.push('Title is required')
+    }
+
+    if (tagline === '') {
+      error.push('Title is required')
+    }
+
+    if (facebook === '') {
+      error.push('Facebook Link is required')
+    }
+
+    if (google === '') {
+      error.push('Google Link is required')
+    }
+
+    if (instagram === '') {
+      error.push('Instagram Link is required')
+    }
+
+    if (twitter === '') {
+      error.push('Twitter Link is required')
+    }
+
+    if (linkedn === '') {
+      error.push('linkedin Link is required')
+    }
+
+    if (g_api_key === '') {
+      error.push('Google Api key is required')
+    }
+
+    if (g_analytics_key === '') {
+      error.push('Google Analytics key is required')
+    }
+
+    if (g_analytics_key === '') {
+      error.push('Google Analytics key is required')
+    }
+
+    if (date_format === '') {
+      error.push('Date format is required')
     }
 
     if (error.length > 0) {
@@ -55,7 +115,7 @@ class Settings extends React.Component {
       })
     } else {
       const data = {
-        email, password, status, fname, lname
+        // email, password, status, fname, lname
       }
       const response = await AddUser(data)
       if (response.status === 201) {
@@ -75,10 +135,18 @@ class Settings extends React.Component {
     }, 5000)
   }
 
+  HandleChange
+
   HandleChange = (event) => {
-    this.setState({
-      [event.target.name] : event.target.value
-    })
+    let dictV = {
+      [event.target.name]: event.target.value
+    }
+    this.setState(prev => ({
+      data: {
+        ...prev.data,
+        ...dictV
+      }
+    }))
   }
 
   getErrors = () => {
@@ -89,13 +157,47 @@ class Settings extends React.Component {
     }
     return jsx
   }
+
+  AddMore = (event) => {
+    this.setState(prev => ({
+      data: {
+        ...prev.data,
+        more: [
+            ...prev.data.more,
+            'test@gmail.com'
+          ]
+        }
+    }))
+  }
+
+  HandleMoreChange = (e, i) => {
+    const { more } = this.state.data
+    more[i] = e.target.value
+    this.setState({
+      data: {
+        ...this.state.data,
+        more: more
+      }
+    })
+  }
+
+  RemoveEmail = (id) => {
+    const { more } = this.state.data
+    const slice = more.splice(id, 1)
+    this.setState({
+      data: {
+        ...this.state.data,
+        more: more
+      }
+    })
+  }
   render () {
-    const { data, success, errors } = this.state
+    const { data, success, errors, more } = this.state
     return (
       <Row className="m-2">
         <Col>
           <Card className="mb-3">
-            <CardHeader> <BsFillPersonPlusFill className="mx-2" /> Add New Users</CardHeader>
+            <CardHeader> <BsGearFill className="mx-2" /> Settings </CardHeader>
             <CardBody>
             {
               success ? <Alert color="success" > Successfully added. </Alert> : ''
@@ -104,23 +206,20 @@ class Settings extends React.Component {
                 this.getErrors()
               }
               <Form>
-
-
-
-              <FormGroup row>
-                <Label for="exampleEmail" sm={2}>
-                  Logo
-                </Label>
-                <Col sm={10}>
-                  <Input
-                    type="file"
-                    name="logo"
-                    placeholder="First Name"
-                    bsSize="sm"
-                    onChange={this.HandleChange}
-                  />
-                </Col>
-              </FormGroup>
+                <FormGroup row>
+                  <Label for="exampleEmail" sm={2}>
+                    Logo
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="file"
+                      name="logo"
+                      placeholder="First Name"
+                      bsSize="sm"
+                      onChange={this.HandleChange}
+                    />
+                  </Col>
+                </FormGroup>
 
               <FormGroup row>
                 <Label for="exampleEmail" sm={2}>
@@ -131,8 +230,8 @@ class Settings extends React.Component {
                 onChange={this.HandleChange}
                 >
                   <option value="" disabled>Select Theame</option>
-                  <option value={true}>Primary</option>
-                  <option value={false}>Secondary</option>
+                  <option value="primary">Primary</option>
+                  <option value="secondary">Secondary</option>
                 </Input>
                 </Col>
               </FormGroup>
@@ -143,28 +242,45 @@ class Settings extends React.Component {
                   </Label>
                   <Col sm={10}>
                     <Input
-                      type="text"
+                      type="email"
                       name="email"
                       placeholder="Admin Email"
                       bsSize="sm"
-                      value={data.admin_email}
+                      value={data.admin_email || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
                 </FormGroup>
+
                 <FormGroup row>
                   <Label for="exampleEmail2" sm={2}>
                     More Email
                   </Label>
-                  <Col sm={10}>
-                    <Input
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                      bsSize="sm"
-                      value={""}
-                      onChange={this.HandleChange}
-                    />
+                  <Col sm={8}>
+                    {
+                      data.more.map((item, i) => {
+                       return (
+                         <div key={'more_' + i} className="d-flex">
+                          {
+                            i === 0 ? '' : <Button size="sm" className="mr-2 my-2" onClick={() => this.RemoveEmail(i)}>Remove </Button>
+                          }
+                           <Input
+                             type="email"
+                             name="more_email"
+                             placeholder="Email"
+                             className="my-2"
+                             bsSize="sm"
+                             value={item}
+                             onChange = {(e) => this.HandleMoreChange(e, i)}
+                           />
+                         </div>
+                       )
+                      }
+                    )
+                    }
+                  </Col>
+                  <Col sm={1}>
+                    <Button size="sm" className="float-right my-2" onClick={this.AddMore}>Add</Button>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -172,7 +288,7 @@ class Settings extends React.Component {
                     Maintance Mode
                   </Label>
                   <Col sm={10}>
-                    <Input type="select" name="maintance_mode" value={data.maintance_mode} bsSize="sm"
+                    <Input type="select" name="maintance_mode" value={data.maintance_mode || ""} bsSize="sm"
                     onChange={this.HandleChange}
                     >
                       <option value="" disabled>Select Maintance Mode</option>
@@ -192,7 +308,7 @@ class Settings extends React.Component {
                       name="version"
                       placeholder="Version"
                       bsSize="sm"
-                      value={data.version}
+                      value={data.version || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -208,7 +324,7 @@ class Settings extends React.Component {
                       name="limit"
                       placeholder="Limit"
                       bsSize="sm"
-                      value={data.limit}
+                      value={data.limit || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -224,7 +340,7 @@ class Settings extends React.Component {
                       name="offset"
                       placeholder="Offset"
                       bsSize="sm"
-                      value={data.offset}
+                      value={data.offset || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -240,7 +356,7 @@ class Settings extends React.Component {
                       name="title"
                       placeholder="Title"
                       bsSize="sm"
-                      value={data.title}
+                      value={data.title || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -256,7 +372,7 @@ class Settings extends React.Component {
                       name="tagline"
                       placeholder="Tagline"
                       bsSize="sm"
-                      value={data.tagline}
+                      value={data.tagline || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -272,7 +388,7 @@ class Settings extends React.Component {
                       name="facebook"
                       placeholder="Facebook"
                       bsSize="sm"
-                      value={data.facebook}
+                      value={data.facebook || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -288,7 +404,7 @@ class Settings extends React.Component {
                       name="google"
                       placeholder="Google"
                       bsSize="sm"
-                      value={data.google}
+                      value={data.google || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -304,7 +420,7 @@ class Settings extends React.Component {
                       name="twitter"
                       placeholder="Twitter"
                       bsSize="sm"
-                      value={data.twitter}
+                      value={data.twitter || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -320,7 +436,7 @@ class Settings extends React.Component {
                       name="instagram"
                       placeholder="Instagram"
                       bsSize="sm"
-                      value={data.instagram}
+                      value={data.instagram || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -336,7 +452,7 @@ class Settings extends React.Component {
                       name="g_api_key"
                       placeholder="Google Api Key"
                       bsSize="sm"
-                      value={data.g_api_key}
+                      value={data.g_api_key || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -352,7 +468,7 @@ class Settings extends React.Component {
                       name="g_analytics_key"
                       placeholder="Google Analytics Key"
                       bsSize="sm"
-                      value={data.g_analytics_key}
+                      value={data.g_analytics_key || ""}
                       onChange={this.HandleChange}
                     />
                   </Col>
@@ -363,7 +479,7 @@ class Settings extends React.Component {
                     Date Format
                   </Label>
                   <Col sm={10}>
-                    <Input type="select" name="maintance_mode" value={data.date_format} bsSize="sm"
+                    <Input type="select" name="maintance_mode" value={data.date_format || ""} bsSize="sm"
                     onChange={this.HandleChange}
                     >
                       <option value="" disabled>Select Date Format</option>
@@ -379,20 +495,20 @@ class Settings extends React.Component {
                   <Col sm={5}>
                       <Input
                         type="text"
-                        name="g_analytics_key"
+                        name="thumbnail"
                         placeholder="Thumbnail Width"
                         bsSize="sm"
-                        value={data.g_analytics_key}
+                        value={data.thumbnail['width'] || ""}
                         onChange={this.HandleChange}
                     />
                     </Col>
                     <Col sm={5}>
                       <Input
                         type="text"
-                        name="g_analytics_key"
+                        name="thumbnail"
                         placeholder="Thumbnail Height"
                         bsSize="sm"
-                        value={data.g_analytics_key}
+                        value={data.thumbnail['height'] || ""}
                         onChange={this.HandleChange}
                     />
                     </Col>

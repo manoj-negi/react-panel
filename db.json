@@ -139,7 +139,7 @@
     "id": "1",
     "logo": null,
     "theame": "secondary",
-    "admin_email": "",
+    "admin_email": "hello@123.com",
     "more_email": [],
     "maintance_mode": true,
     "version": "",
@@ -156,8 +156,8 @@
     "g_analytics_key": "",
     "date_format": "",
     "thumbnail": {
-      "height": null,
-      "width": null
+      "height": 250,
+      "width": 250
     }
   }
 }
