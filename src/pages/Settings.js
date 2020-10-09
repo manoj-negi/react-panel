@@ -190,7 +190,6 @@ class Settings extends React.Component {
   }
   render () {
     const { data, success, errors, more } = this.state
-    console.log(data)
     return (
       <Row className="m-2">
         <Col>
