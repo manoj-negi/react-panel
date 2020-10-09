@@ -43,8 +43,6 @@ class AuthForm extends React.Component {
     if (errors.length === 0) {
       localStorage.setItem('auth', true)
       redirect = true
-      // console.log('===================')
-      // console.log(this.context)
       this.props.history.push('/')
     }
 
