@@ -29,6 +29,10 @@
     "reactstrap": "^7.1.0",
     "victory": "^32.0.0"
   },
+  "engines": {
+    "npm": "6.14.6",
+    "node": "10.22.1"
+  },
   "devDependencies": {
     "gh-pages": "^1.2.0",
     "node-sass": "^4.11.0",
