@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardBody, CardHeader, Button, Form, Col, Row, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { BsFillPersonPlusFill } from "react-icons/bs";
-import { AddUser } from "../../requests/user";
-
+import { FaUserEdit } from 'react-icons/fa';
+import { AddUser, GetUserDetail, EditUser } from "../../requests/user";
+import queryString from 'query-string'
 
 class UserCreate extends React.Component {
 
@@ -14,30 +15,58 @@ class UserCreate extends React.Component {
     status: '',
     success: false,
     fname: '',
-    lname: ''
+    lname: '',
+    edit: false,
+    message: 'Successfully added.',
+    id: null
+  }
+
+  componentDidMount() {
+    const id = this.props.location.search
+    let params = queryString.parse(id)
+    if ((params) && (params.id)) {
+      this.setData(params.id)
+    }
+  }
+
+  setData = async (id) => {
+    const response = await GetUserDetail(id)
+    if ((response) && (response.data)) {
+      const data = response.data
+      this.setState({
+        edit: true,
+        email: data.email,
+        fname: data.fname,
+        lname: data.lname,
+        status: data.status,
+        id: data.id
+      })
+    }
   }
 
   HandleSubmit = async () => {
-    const { email, password, cpassword , status, fname, lname } = this.state
+    let { email, password, cpassword , status, fname, lname, edit, message, id } = this.state
     const error = []
     if (!email) {
       error.push('Email is required')
     }
 
-    if (!password) {
-      error.push('Password is required')
-    }
+    if (!edit) {
+      if (!password) {
+        error.push('Password is required')
+      }
 
-    if (!cpassword) {
-      error.push('Confirm Password is required')
-    }
-
-    if (status === '') {
-      error.push('Please select the status')
+      if (!cpassword) {
+        error.push('Confirm Password is required')
+      }
     }
 
     if (password !== cpassword) {
       error.push('Passwords Didn\'t matched ')
+    }
+
+    if (status === '') {
+      error.push('Please select the status')
     }
 
     if (error.length > 0) {
@@ -48,10 +77,17 @@ class UserCreate extends React.Component {
       const data = {
         email, password, status, fname, lname
       }
-      const response = await AddUser(data)
-      if (response.status === 201) {
+      let response = {}
+      if (edit){
+        response = await EditUser(data, id)
+        message = 'Successfully edited'
+      } else {
+        response = await AddUser(data)
+      }
+      if (response.status === 201 || response.status === 200) {
         this.setState({
-          success: true
+          success: true,
+          message: message
         })
         setTimeout(() => {
           this.props.history.push('/user')
@@ -81,15 +117,20 @@ class UserCreate extends React.Component {
     return jsx
   }
   render () {
-    const { email, password, cpassword, status, success, fname, lname } = this.state
+    const { email, password, cpassword, status, success, fname, lname, edit, message } = this.state
+
     return (
       <Row className="m-2">
         <Col>
           <Card className="mb-3">
-            <CardHeader> <BsFillPersonPlusFill className="mx-2" /> Add New Users</CardHeader>
+            <CardHeader>
+            {
+              edit ? <span><FaUserEdit className="mx-2" />Edit User</span> : <span><BsFillPersonPlusFill className="mx-2" /> 'Add New Users</span>
+            }
+            </CardHeader>
             <CardBody>
             {
-              success ? <Alert color="success" > Successfully added. </Alert> : ''
+              success ? <Alert color="success" >{ message } </Alert> : ''
             }
               {
                 this.getErrors()
