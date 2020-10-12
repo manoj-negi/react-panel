@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardBody, CardHeader, Button, Form, Col, Row, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { BsFillPersonPlusFill } from "react-icons/bs";
-import { AddMaster } from "../../requests/master.js";
+import { AddMaster, GetMasterDetails, EditMaster } from "../../requests/master.js";
 import { withRouter } from 'react-router';
+import queryString from 'query-string'
 
 class UserCreate extends React.Component {
 
@@ -14,11 +15,38 @@ class UserCreate extends React.Component {
     errors: [],
     status: '',
     parent: '',
-    success: false
+    success: false,
+    edit: false,
+    id:null
+  }
+
+  componentDidMount() {
+    const id = this.props.location.search
+    let params = queryString.parse(id)
+    if ((params) && (params.id)) {
+      this.setData(params.id)
+    }
+  }
+
+  setData = async (id) => {
+    const response = await GetMasterDetails(id)
+    if ((response) && (response.data)) {
+      const data = response.data
+      console.log(data)
+      this.setState({
+        edit: true,
+        title: data.title,
+        description: data.description,
+        slug: data.slug,
+        status: data.status,
+        parent: data.parent,
+        id: id
+      })
+    }
   }
 
   HandleSubmit = async () => {
-    const { title, description, slug, parent, thumbnail, status } = this.state
+    const { title, description, slug, parent, thumbnail, status, edit, id } = this.state
     const error = []
     if (!title) {
       error.push('Title is required')
@@ -54,8 +82,14 @@ class UserCreate extends React.Component {
       formData.append('slug', slug)
       formData.append('parent', parent)
       const data = { title, description, slug, parent, thumbnail, status }
-      const response = await AddMaster(data)
-      if (response.status === 201) {
+      let response = {}
+      if (edit) {
+        response = await EditMaster(data, id)
+      } else {
+        response = await AddMaster(data)
+      }
+      console.log(response)
+      if (response.status === 201 || response.status === 200) {
         this.setState({
           success: true
         })
@@ -94,15 +128,17 @@ class UserCreate extends React.Component {
     return jsx
   }
   render () {
-    const { title, description, slug, parent, thumbnail, status, success } = this.state
+    const { title, description, slug, parent, thumbnail, status, success, edit } = this.state
     return (
       <Row className="m-2">
         <Col>
           <Card className="mb-3">
-            <CardHeader> <BsFillPersonPlusFill className="mx-2" /> Add New Master</CardHeader>
+            <CardHeader> <BsFillPersonPlusFill className="mx-2" /> { edit ? 'Edit Master' : 'Add New Master'}</CardHeader>
             <CardBody>
             {
-              success ? <Alert color="success" > Successfully added. </Alert> : ''
+              success ? <Alert color="success" > {
+                edit ? 'Successfully updated.' : 'Successfully added.'
+              } </Alert> : ''
             }
               {
                 this.getErrors()
