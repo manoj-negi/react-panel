@@ -29,6 +29,7 @@ import {
   PopoverBody,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
+import { withRouter } from 'react-router';
 
 const bem = bn.create('header');
 
@@ -74,6 +75,11 @@ class Header extends React.Component {
 
     document.querySelector('.cr-sidebar').classList.toggle('cr-sidebar--open');
   };
+
+  Signout = () => {
+    localStorage.removeItem('auth')
+    this.props.history.push('/login')
+  }
 
   render() {
     const { isNotificationConfirmed } = this.state;
@@ -141,7 +147,7 @@ class Header extends React.Component {
                   className="border-light"
                 >
                   <ListGroup flush>
-                    <ListGroupItem tag="button" action className="border-light">
+                    {/* <ListGroupItem tag="button" action className="border-light">
                       <MdPersonPin /> Profile
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
@@ -155,8 +161,8 @@ class Header extends React.Component {
                     </ListGroupItem>
                     <ListGroupItem tag="button" action className="border-light">
                       <MdHelp /> Help
-                    </ListGroupItem>
-                    <ListGroupItem tag="button" action className="border-light">
+                    </ListGroupItem> */}
+                    <ListGroupItem tag="button" action className="border-light" onClick={this.Signout}>
                       <MdExitToApp /> Signout
                     </ListGroupItem>
                   </ListGroup>
@@ -170,4 +176,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);
