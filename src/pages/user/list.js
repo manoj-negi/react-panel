@@ -105,7 +105,7 @@ class UserList extends React.Component {
                 </ModalFooter>
               </Modal>
 
-              <div className="ag-theme-alpine" style={ { height: 400, width: '100%' } }>
+              <div className="ag-theme-alpine my-4 pb-4" style={ { height: 500, width: '100%' } }>
 
               <Button color="primary" size="sm" onClick={this.handleEdit}>
                  <FaUserEdit className="mr-1" />
