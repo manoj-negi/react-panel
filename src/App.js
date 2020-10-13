@@ -40,7 +40,6 @@ class App extends React.Component {
   }
 
   render() {
-    const isAuth = localStorage.getItem('auth')
     return (
       <Router>
         <GAListener>
@@ -62,8 +61,7 @@ class App extends React.Component {
               )}
             />
 
-            {
-              isAuth === 'true' ? <MainLayout breakpoint={this.props.breakpoint}>
+            <MainLayout breakpoint={this.props.breakpoint} >
                 <React.Suspense fallback={<PageSpinner />}>
                  {
                    PrivateRoutes.map((item, i) => <Route exact path={item.path} component={item.component} key={'route' + i} />)
@@ -89,8 +87,7 @@ class App extends React.Component {
                   <Route exact path="/input-groups" component={InputGroupPage} />
                   <Route exact path="/charts" component={ChartPage} />
                 </React.Suspense>
-              </MainLayout> : <Redirect to="/login" />
-            }
+              </MainLayout>
           </Switch>
         </GAListener>
       </Router>

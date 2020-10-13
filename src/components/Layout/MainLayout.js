@@ -23,6 +23,10 @@ class MainLayout extends React.Component {
   }
 
   componentDidMount() {
+   const isAuth = localStorage.getItem('auth')
+   if (isAuth !== 'true') {
+     this.props.history.push('/login')
+   }
     this.checkBreakpoint(this.props.breakpoint);
 
     setTimeout(() => {
